@@ -12,8 +12,155 @@
 </head>
 
 <body>
+  <header class="container-fluid">
+    <div class="row">
+      <div id="red-options" class="col-md-4">
+        <h2>Choose Adversary Aircraft</h2>
+        <button type="button" class="btn btn-danger">MIG-31</button>
+        <button type="button" class="btn btn-danger">MIG-35</button>
+        <button type="button" class="btn btn-danger">Su-35</button>
+      </div>
+      <div class="col-md-4">
+        <h1 class="text-center">Air-to-Air Combat</h1>
+      </div>
+      <div id="blue-options" class="col-md-4">
+        <h2>Choose Your Aircraft</h2>
+        <button type="button" class="btn btn-info">F-16</button>
+        <button type="button" class="btn btn-info">F-15</button>
+        <button type="button" class="btn btn-info">F-22</button>
+      </div>
+    </div>
+  </header>
+  <main class="container-fluid">
+    <div class="row">
+      <div id="red-force" class="col-md-4">
+        <img src="assets/gamestartimg.jpg" width="400" alt="Image of Snoopy">
+      </div>
+      <div id="game-status" class="col-md-4">
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Adversary Health:
+              <span id="health">_</span>
+            </h3>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                aria-valuemax="100" style="width: 75%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div id="rounds" class="col-md-12">
+            <h3>Rounds Remaining</h3>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                aria-valuemax="100" style="width: 75%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div id="heat-seeker" class="col-md-12">
+            <h3>IR Missiles Remaining</h3>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                aria-valuemax="100" style="width: 75%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div id="guided" class="col-md-12">
+            <h3>Guided Missiles Remaining</h3>
+            <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                aria-valuemax="100" style="width: 75%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <script src="game.js"></script>
+      <div id="blue-force" class="col-md-4">
+        <img src="assets/gamestartimg.jpg" width="400" alt="Image of Snoopy">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+          <div class="card-header">Rotary Cannon</div>
+          <img src="assets/cannon.jpg" width="100%" height="170px" Salt="M61 Rotary Cannon">
+          <div class="card-body">
+            <h4 class="card-title">M61 Vulcan Cannon</h4>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button type="button" class="btn btn-danger" onclick="attack(5)">Attack</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+          <div class="card-header">Heat Seeking Missile</div>
+          <div>
+            <img src="assets/aim9.jpg" width="100%" height="170px" alt="AIM-9 Missile">
+          </div>
+          <div class="card-body ">
+            <h4 class="card-title ">AIM-9 Sparrow</h4>
+            <p class="card-text ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button type="button" class="btn btn-danger" onclick="attack(10)">Attack</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 ">
+        <div class="card text-white bg-primary mb-3 " style="max-width: 20rem; ">
+          <div class="card-header ">Radar Guided Missile</div>
+          <img src="assets/aim120.jpg" width="100%" height="170px" alt="AIM-120 Missile">
+          <div class="card-body ">
+            <h4 class="card-title ">AIM-120 AMRAAM</h4>
+            <p class="card-text ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button type="button " class="btn btn-danger " onclick="attack(25)">Attack</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 ">
+        <div class="card text-white bg-primary mb-3 " style="max-width: 20rem; ">
+          <div class="card-header ">Dispense Chaff</div>
+          <img src="assets/chaff.jpg" width="100%" height="170px" alt="Aircraft Chaff">
+          <div class="card-body ">
+            <h4 class="card-title ">Primary card title</h4>
+            <p class="card-text ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button type="button " class="btn btn-secondary ">Defend</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 ">
+        <div class="card text-white bg-primary mb-3 " style="max-width: 20rem; ">
+          <div class="card-header ">Dispense Flares</div>
+          <img src="assets/flares.jpg" width="100%" height="170px" alt="Aircraft Flares">
+          <div class="card-body ">
+            <h4 class="card-title ">Primary card title</h4>
+            <p class="card-text ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button type="button " class="btn btn-secondary ">Defend</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 ">
+        <div class="card text-white bg-primary mb-3 " style="max-width: 20rem; ">
+          <div class="card-header ">Make Evasive Manuevers</div>
+          <img src="assets/evasive.jpg" width="100%" height="170px" alt="Aircraft pulling Gs">
+          <div class="card-body ">
+            <h4 class="card-title ">Primary card title</h4>
+            <p class="card-text ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button type="button " class="btn btn-secondary ">Defend</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="container-fluid ">
+    <div class="row ">
+      <div class="col-md-8 ">
+        <button type="button " class="btn btn-primary btn-lg btn-block ">Reset Game Play</button>
+      </div>
+      <div class="col-md-4 ">Myinfohere</div>
+    </div>
+  </footer>
+  <script src="game.js "></script>
 </body>
 
 </html>
