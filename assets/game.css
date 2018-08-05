@@ -1,0 +1,8 @@
+.ac-options {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+footer {
+  height: 10vh;
+}
