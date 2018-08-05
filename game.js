@@ -110,6 +110,16 @@ let blueForces = [
 var activeRedForce = redForces[0];
 var activeBlueForce = blueForces[0];
 
+function setRedForce(selection) {
+  activeRedForce = redForces.find(target => target.name == selection);
+  draw();
+}
+
+function setBlueForce(selection) {
+  activeBlueForce = blueForces.find(target => target.name == selection);
+  draw();
+}
+
 function fireCannon() {
   let damage = 2;
   if (activeRedForce.evasiveAction) {
