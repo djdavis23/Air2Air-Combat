@@ -115,9 +115,9 @@
               systems.
             </p>
             <p class="text-success">
-              <strong>AMRAAM DAMAGE: -10</strong>
+              <strong>AMRAAM DAMAGE: 0 - 20</strong>
             </p>
-            <button type="button " class="btn btn-secondary ">Defend</button>
+            <button type="button " class="btn btn-secondary " onclick="dispenseChaff()">Defend</button>
           </div>
         </div>
       </div>
@@ -129,10 +129,10 @@
             <h4 class="card-title ">Confuse IR Missiles</h4>
             <p class="card-text ">Infrared countermeasures are designed to produce a heat signature greater than the aircraft. This can cause a
               heat-seeking missile to lose lock.</p>
-            <p class="text-success">
-              <strong>SIDEWINDER DAMAGE: -5</strong>
+            <p class="text-success long">
+              <strong>SIDEWINDER DAMAGE: 0-10</strong>
             </p>
-            <button type="button " class="btn btn-secondary ">Defend</button>
+            <button type="button " class="btn btn-secondary " onclick="dispenseFlare()">Defend</button>
           </div>
         </div>
       </div>
@@ -142,13 +142,13 @@
           <img src="assets/evasive.jpg" width="100%" height="170px" alt="Aircraft pulling Gs">
           <div class="card-body ">
             <h4 class="card-title ">Avoid cannon fire</h4>
-            <p class="card-text ">A skilled and sometime lucky pilot may be able to avoid gunfire through carefully timed and swiftly-executed
-              manuevers.
+            <p class="card-text ">A skilled or lucky pilot may be able to avoid gunfire through carefully timed and swiftly-executed manuevers
+              and lessen damage.
             </p>
             <p class="text-success">
-              <strong>CANNON DAMAGE: -1</strong>
+              <strong>CANNON DAMAGE: 0 - 2</strong>
             </p>
-            <button type="button " class="btn btn-secondary ">Defend</button>
+            <button type="button " class="btn btn-secondary " onclick="evasiveAction()">Defend</button>
           </div>
         </div>
       </div>

@@ -111,7 +111,11 @@ var activeRedForce = redForces[0];
 var activeBlueForce = blueForces[0];
 
 function fireCannon() {
-  activeRedForce.health -= 2;
+  let damage = 2;
+  if (activeRedForce.evasiveAction) {
+    damage = Math.round(Math.random() * damage);
+  }
+  activeRedForce.health -= damage;
   activeBlueForce.numRounds -= 100;
   if (activeBlueForce.numRounds <= 0) {
     gunButton.setAttribute('disabled', 'true');
@@ -121,7 +125,11 @@ function fireCannon() {
 }
 
 function launchSidewinder() {
-  activeRedForce.health -= 10;
+  let damage = 10;
+  if (activeRedForce.flareActive) {
+    damage = Math.round(Math.random() * damage);
+  }
+  activeRedForce.health -= damage;
   activeBlueForce.numSidewinders -= 1;
   if (activeBlueForce.numSidewinders <= 0) {
     sidewinderButton.setAttribute('disabled', 'true');
@@ -131,7 +139,11 @@ function launchSidewinder() {
 }
 
 function launchAmraam() {
-  activeRedForce.health -= 20;
+  let damage = 20;
+  if (activeRedForce.chaffActive) {
+    damage = Math.round(Math.random() * damage);
+  }
+  activeRedForce.health -= damage;
   activeBlueForce.numAmraams -= 1;
   if (activeBlueForce.numAmraams <= 0) {
     amraamButton.setAttribute('disabled', 'true');
