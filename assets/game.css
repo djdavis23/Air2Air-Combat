@@ -3,6 +3,13 @@
   justify-content: space-evenly;
 }
 
+#status {
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%; 
+}
+
 footer {
   height: 10vh;
 }

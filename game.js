@@ -12,6 +12,7 @@ const healthProg = document.getElementById("health-prog");
 const roundsProg = document.getElementById("rounds-prog");
 const sidewinderProg = document.getElementById("sidewinder-prog");
 const amraamProg = document.getElementById("amraam-prog");
+const statusBlock = document.getElementById('status-block');
 
 
 //HTML BUTTON ELEMENTS
@@ -59,7 +60,7 @@ let redForces = [
     imgs: [
       'assets/redbaron.jpg',
       'assets/damagedBaron.gif',
-      'assets/exploded.jpg'
+      'assets/baronexploded.jpg'
     ],
     evasiveAction: false,
     chaffActive: false,
@@ -80,7 +81,8 @@ let blueForces = [
     numAmraams: 2,
     imgs: [
       'assets/F-15.jpg',
-      'assets/victory.gif'
+      'assets/victory.gif',
+      'assets/defeat.gif'
     ],
     imgIndex: 0
   },
@@ -94,7 +96,8 @@ let blueForces = [
     numAmraams: 4,
     imgs: [
       'assets/f22.jpg',
-      'assets/victory.gif'
+      'assets/victory.gif',
+      'assets/defeat.gif'
     ],
     imgIndex: 0
   },
@@ -108,72 +111,82 @@ let blueForces = [
     numAmraams: 2,
     imgs: [
       'assets/snoopy.jpg',
-      'assets/snoopyvictory.gif'
+      'assets/snoopyvictory.gif',
+      'assets/snoopydefeat.gif'
     ],
     imgIndex: 0
   }
 ]
 
+//ACTIVE AIRCRAFT VARIABLES, DEFAULT SET IN CASE USER DOES NOT SELECT
 var activeRedForce = redForces[0];
 var activeBlueForce = blueForces[0];
+var statusMessage = "GAME ON!";
 
+//ALLOWS USER TO SELECT RED FORCES ADVERSARY
 function setRedForce(selection) {
   activeRedForce = redForces.find(target => target.name == selection);
   draw();
 }
 
+//ALLOWS USER TO SELECT HIS OR HER AIRCRAFT
 function setBlueForce(selection) {
   activeBlueForce = blueForces.find(target => target.name == selection);
   draw();
 }
 
+
+//FIRES VULCAN CANNON, UPDATES ROUNDS REMAINING AND ADVERSARY HEALTH
 function fireCannon() {
   let damage = 2;
+  //modify damage if evasive action is taken by adversary
   if (activeRedForce.evasiveAction) {
     damage = Math.round(Math.random() * damage);
   }
   activeRedForce.health -= damage;
   activeBlueForce.numRounds -= 100;
-  if (activeBlueForce.numRounds <= 0) {
-    gunButton.setAttribute('disabled', 'true');
-  }
   update();
   draw();
 }
 
+//FIRES SIDEWINDER, UDPATES SIDEWINDERS REMAINING AND ADVERSARY HEALTH
 function launchSidewinder() {
   let damage = 10;
+  //modify damage if adversary dispenses flares
   if (activeRedForce.flareActive) {
     damage = Math.round(Math.random() * damage);
   }
   activeRedForce.health -= damage;
   activeBlueForce.numSidewinders -= 1;
-  if (activeBlueForce.numSidewinders <= 0) {
-    sidewinderButton.setAttribute('disabled', 'true');
-  }
+
   update();
   draw()
 }
 
+//FIRES AMRAAM, UPDATES AMRAAMS REMAINING AND ADVERSARY HEALTH
 function launchAmraam() {
   let damage = 20;
+  //modify damage if adversary dispenses chaff
   if (activeRedForce.chaffActive) {
     damage = Math.round(Math.random() * damage);
   }
   activeRedForce.health -= damage;
   activeBlueForce.numAmraams -= 1;
-  if (activeBlueForce.numAmraams <= 0) {
-    amraamButton.setAttribute('disabled', 'true');
-  }
+
   update();
   draw();
 }
 
+//UPDATES UI ELEMENTS BASED ON GAME PLAY
 function update() {
+
+  //if adversary health goes to zero, player wins
   if (activeRedForce.health <= 0) {
     activeBlueForce.imgIndex = 1;
     activeRedForce.imgIndex = 2;
-    //diable all buttons except for reset
+    statusMessage = "YOU WIN!!!"
+    statusBlock.className = "text-success"
+    //disable all buttons except for reset
     for (let i = 0; i < btnArray.length; i++) {
       const button = btnArray[i];
       if (button.id != 'reset-btn') {
@@ -181,32 +194,67 @@ function update() {
       }
     }
   }
+  //if the player runs out of ammo without killing target, player loses
+  else if (activeBlueForce.numRounds == 0 && activeBlueForce.numAmraams == 0 && activeBlueForce.numSidewinders == 0) {
+    statusMessage = "NO AMMO - YOU LOSE!!!";
+    statusBlock.className = "text-danger";
+    activeBlueForce.imgIndex = 2;
+    for (let i = 0; i < btnArray.length; i++) {
+      const button = btnArray[i];
+      if (button.id != 'reset-btn') {
+        button.disabled = true;
+      }
+    }
+  }
+  //when adversary health goes below 20, aircraft is crippled
   else if (activeRedForce.health <= 20) {
     activeRedForce.imgIndex = 1;
   }
+  //if all rounds are used, disable the cannon attack button
+  if (activeBlueForce.numRounds <= 0) {
+    gunButton.setAttribute('disabled', 'true');
+  }
+  //if all sidewinders used, disable attack button
+  if (activeBlueForce.numSidewinders <= 0) {
+    sidewinderButton.setAttribute('disabled', 'true');
+  }
+  //if all AMRAAMs used, disable attack button
+  if (activeBlueForce.numAmraams <= 0) {
+    amraamButton.setAttribute('disabled', 'true');
+  }
 }
 
+// NOTE:  In this initial version of the game, only one defensive measure is active 
+// at any given time.  Also, each defense only affects one attack mode.  However, 
+// the user has unlimited reserves of both chaff and flares.  
+
+//TOGGLES EVASIVE ACTION TO TRUE, DEACTIVATES OTHER DEFENSES
 function evasiveAction() {
   activeRedForce.evasiveAction = true;
   activeRedForce.chaffActive = false;
   activeRedForce.flareActive = false;
 }
 
+//TOGGLES CHAFF TO TRUE, DEACTIVATES OTHER DEFENSES
 function dispenseChaff() {
   activeRedForce.evasiveAction = false;
   activeRedForce.chaffActive = true;
   activeRedForce.flareActive = false;
 }
 
+//TOGGLES FLARES TO TRUE, DEACTIVATES OTHER DEFENSES
 function dispenseFlare() {
   activeRedForce.evasiveAction = false;
   activeRedForce.chaffActive = false;
   activeRedForce.flareActive = true;
 }
 
+//RENDERS UPDATES TO WEBPATE
 function draw() {
+  //update images
   redForceImage.setAttribute('src', activeRedForce.imgs[activeRedForce.imgIndex]);
   blueForceImage.setAttribute('src', activeBlueForce.imgs[activeBlueForce.imgIndex]);
+  //update status block
   healthProg.style.width = ((activeRedForce.health / activeRedForce.lifeExp) * 100).toString() + '%';
   roundsProg.style.width = ((activeBlueForce.numRounds / activeBlueForce.cannonCap) * 100).toString() + '%';
   sidewinderProg.style.width = ((activeBlueForce.numSidewinders / activeBlueForce.sidewinderCap) * 100).toString() + '%';
@@ -215,15 +263,17 @@ function draw() {
   rounds.innerText = activeBlueForce.numRounds.toString();
   sidewinders.innerText = activeBlueForce.numSidewinders.toString();
   amraam.innerText = activeBlueForce.numAmraams.toString();
+  statusBlock.innerText = statusMessage;
 }
 
+//DRAWS BUTTONS FOR EACH AVAILABLE AIRCRAFT FOR THE PLAYER TO SELECT
 function drawButtons() {
   //draw red force buttons
   let redTemplate = ""
   for (let i = 0; i < redForces.length; i++) {
     const target = redForces[i];
     redTemplate += `
-    <button type="button" class="btn btn-danger mb-3" onclick= "setRedForce(${target.name})">${target.name}
+    <button type="button" class="btn btn-danger mb-3" onclick= "setRedForce('${target.name}')">${target.name}
     </button>
   `;
   }
@@ -234,13 +284,14 @@ function drawButtons() {
   for (let i = 0; i < blueForces.length; i++) {
     const target = blueForces[i];
     blueTemplate += `
-    <button type="button" class="btn btn-info mb-3" onclick= "setblueForce(${target.name})">${target.name}
+    <button type="button" class="btn btn-info mb-3" onclick= "setBlueForce('${target.name}')">${target.name}
     </button>
   `;
   }
   blueButtons.innerHTML = blueTemplate;
 }
 
+//RESETS ALL ELEMENTS TO STARTING STATUS
 function reset() {
   //reset blue force attributes to starting status
   activeBlueForce.imgIndex = 0;
