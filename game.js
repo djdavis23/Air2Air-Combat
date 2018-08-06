@@ -82,7 +82,9 @@ let blueForces = [
     imgs: [
       'assets/F-15.jpg',
       'assets/victory.gif',
-      'assets/defeat.gif'
+      'assets/defeat.gif',
+      'assets/missilefire.gif',
+      'assets/cannonfire.gif'
     ],
     imgIndex: 0
   },
@@ -97,7 +99,9 @@ let blueForces = [
     imgs: [
       'assets/f22.jpg',
       'assets/victory.gif',
-      'assets/defeat.gif'
+      'assets/defeat.gif',
+      'assets/missilefire.gif',
+      'assets/cannonfire.gif'
     ],
     imgIndex: 0
   },
@@ -112,7 +116,9 @@ let blueForces = [
     imgs: [
       'assets/snoopy.jpg',
       'assets/snoopyvictory.gif',
-      'assets/snoopydefeat.gif'
+      'assets/snoopydefeat.gif',
+      'assets/snoopyguns.gif',
+      'assets/snoopyguns.gif'
     ],
     imgIndex: 0
   }
@@ -143,10 +149,13 @@ function fireCannon() {
   if (activeRedForce.evasiveAction) {
     damage = Math.round(Math.random() * damage);
   }
-  activeRedForce.health -= damage;
-  activeBlueForce.numRounds -= 100;
-  update();
+  //temporarily show jet firing missiles
+  activeBlueForce.imgIndex = 4;
   draw();
+  //update health and missile inventory
+  activeRedForce.health -= damage;
+  activeBlueForce.numRounds -= 1;
+  let temp = setTimeout(update, 1200);
 }
 
 //FIRES SIDEWINDER, UDPATES SIDEWINDERS REMAINING AND ADVERSARY HEALTH
@@ -156,11 +165,13 @@ function launchSidewinder() {
   if (activeRedForce.flareActive) {
     damage = Math.round(Math.random() * damage);
   }
+  //temporarily show jet firing missiles
+  activeBlueForce.imgIndex = 3;
+  draw();
+  //update health and missile inventory
   activeRedForce.health -= damage;
   activeBlueForce.numSidewinders -= 1;
-
-  update();
-  draw()
+  let temp = setTimeout(update, 1000);
 }
 
 //FIRES AMRAAM, UPDATES AMRAAMS REMAINING AND ADVERSARY HEALTH
@@ -170,12 +181,16 @@ function launchAmraam() {
   if (activeRedForce.chaffActive) {
     damage = Math.round(Math.random() * damage);
   }
+  //temporarily show jet firing missiles
+  activeBlueForce.imgIndex = 3;
+  draw();
+  //update health and missile inventory
   activeRedForce.health -= damage;
   activeBlueForce.numAmraams -= 1;
-
-  update();
-  draw();
+  let temp = setTimeout(update, 1000);
 }
+
+
 
 //UPDATES UI ELEMENTS BASED ON GAME PLAY
 function update() {
@@ -209,9 +224,14 @@ function update() {
   //when adversary health goes below 20, aircraft is crippled
   else if (activeRedForce.health <= 20) {
     activeRedForce.imgIndex = 1;
+    activeBlueForce.imgIndex = 0;
     statusMessage = "ADVERSARY SEVERELY DAMAGED!!!"
     statusBlock.className = "text-warning"
   }
+  else {
+    activeBlueForce.imgIndex = 0;
+  }
+
   //if all rounds are used, disable the cannon attack button
   if (activeBlueForce.numRounds <= 0) {
     gunButton.setAttribute('disabled', 'true');
@@ -224,6 +244,7 @@ function update() {
   if (activeBlueForce.numAmraams <= 0) {
     amraamButton.setAttribute('disabled', 'true');
   }
+  draw();
 }
 
 // NOTE:  In this initial version of the game, only one defensive measure is active 
@@ -307,6 +328,10 @@ function reset() {
   activeRedForce.evasiveAction = false;
   activeRedForce.flareActive = false;
   activeRedForce.chaffActive = false;
+
+  //reset status window
+  statusMessage = "GAME ON!";
+  statusBlock.className = 'text-info';
 
   //enable all buttons
   for (let i = 0; i < btnArray.length; i++) {
