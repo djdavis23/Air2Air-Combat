@@ -209,6 +209,8 @@ function update() {
   //when adversary health goes below 20, aircraft is crippled
   else if (activeRedForce.health <= 20) {
     activeRedForce.imgIndex = 1;
+    statusMessage = "ADVERSARY SEVERELY DAMAGED!!!"
+    statusBlock.className = "text-warning"
   }
   //if all rounds are used, disable the cannon attack button
   if (activeBlueForce.numRounds <= 0) {
