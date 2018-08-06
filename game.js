@@ -8,12 +8,19 @@ const advHealth = document.getElementById("health");
 const rounds = document.getElementById("rounds");
 const sidewinders = document.getElementById("sidewinders");
 const amraam = document.getElementById("amraam");
+const healthProg = document.getElementById("health-prog");
+const roundsProg = document.getElementById("rounds-prog");
+const sidewinderProg = document.getElementById("sidewinder-prog");
+const amraamProg = document.getElementById("amraam-prog");
 
 
 //HTML BUTTON ELEMENTS
 const gunButton = document.getElementById("gun-button");
 const sidewinderButton = document.getElementById("sidewinder-button");
 const amraamButton = document.getElementById("amraam-button");
+const btnArray = document.getElementsByTagName('button');
+const redButtons = document.getElementById('red-buttons');
+const blueButtons = document.getElementById('blue-buttons');
 
 //AVAILABLE ENEMY AIRCRAFT
 let redForces = [
@@ -130,7 +137,7 @@ function fireCannon() {
   if (activeBlueForce.numRounds <= 0) {
     gunButton.setAttribute('disabled', 'true');
   }
-  assessDamage();
+  update();
   draw();
 }
 
@@ -144,7 +151,7 @@ function launchSidewinder() {
   if (activeBlueForce.numSidewinders <= 0) {
     sidewinderButton.setAttribute('disabled', 'true');
   }
-  assessDamage();
+  update();
   draw()
 }
 
@@ -158,14 +165,21 @@ function launchAmraam() {
   if (activeBlueForce.numAmraams <= 0) {
     amraamButton.setAttribute('disabled', 'true');
   }
-  assessDamage();
+  update();
   draw();
 }
 
-function assessDamage() {
+function update() {
   if (activeRedForce.health <= 0) {
     activeBlueForce.imgIndex = 1;
     activeRedForce.imgIndex = 2;
+    //diable all buttons except for reset
+    for (let i = 0; i < btnArray.length; i++) {
+      const button = btnArray[i];
+      if (button.id != 'reset-btn') {
+        button.disabled = true;
+      }
+    }
   }
   else if (activeRedForce.health <= 20) {
     activeRedForce.imgIndex = 1;
@@ -193,11 +207,63 @@ function dispenseFlare() {
 function draw() {
   redForceImage.setAttribute('src', activeRedForce.imgs[activeRedForce.imgIndex]);
   blueForceImage.setAttribute('src', activeBlueForce.imgs[activeBlueForce.imgIndex]);
+  healthProg.style.width = ((activeRedForce.health / activeRedForce.lifeExp) * 100).toString() + '%';
+  roundsProg.style.width = ((activeBlueForce.numRounds / activeBlueForce.cannonCap) * 100).toString() + '%';
+  sidewinderProg.style.width = ((activeBlueForce.numSidewinders / activeBlueForce.sidewinderCap) * 100).toString() + '%';
+  amraamProg.style.width = ((activeBlueForce.numAmraams / activeBlueForce.amraamCap) * 100).toString() + '%';
   advHealth.innerText = activeRedForce.health.toString();
   rounds.innerText = activeBlueForce.numRounds.toString();
   sidewinders.innerText = activeBlueForce.numSidewinders.toString();
   amraam.innerText = activeBlueForce.numAmraams.toString();
 }
 
-draw();
+function drawButtons() {
+  //draw red force buttons
+  let redTemplate = ""
+  for (let i = 0; i < redForces.length; i++) {
+    const target = redForces[i];
+    redTemplate += `
+    <button type="button" class="btn btn-danger mb-3" onclick= "setRedForce(${target.name})">${target.name}
+    </button>
+  `;
+  }
+  redButtons.innerHTML = redTemplate;
 
+  //draw blue force buttons
+  let blueTemplate = ""
+  for (let i = 0; i < blueForces.length; i++) {
+    const target = blueForces[i];
+    blueTemplate += `
+    <button type="button" class="btn btn-info mb-3" onclick= "setblueForce(${target.name})">${target.name}
+    </button>
+  `;
+  }
+  blueButtons.innerHTML = blueTemplate;
+}
+
+function reset() {
+  //reset blue force attributes to starting status
+  activeBlueForce.imgIndex = 0;
+  activeBlueForce.numRounds = activeBlueForce.cannonCap;
+  activeBlueForce.numSidewinders = activeBlueForce.sidewinderCap;
+  activeBlueForce.numAmraams = activeBlueForce.amraamCap;
+
+  //reset red force attributes to starting status
+  activeRedForce.imgIndex = 0;
+  activeRedForce.health = activeRedForce.lifeExp;
+  activeRedForce.evasiveAction = false;
+  activeRedForce.flareActive = false;
+  activeRedForce.chaffActive = false;
+
+  //enable all buttons
+  for (let i = 0; i < btnArray.length; i++) {
+    const button = btnArray[i];
+    button.disabled = false;
+  }
+  //redraw user interface
+  draw();
+  drawButtons();
+}
+//initial draw for user interface
+draw();
+drawButtons();
