@@ -155,7 +155,7 @@ function fireCannon() {
   //update health and missile inventory
   activeRedForce.health -= damage;
   activeBlueForce.numRounds -= 1;
-  let temp = setTimeout(update, 3000);
+  let temp = setTimeout(update, 10000);
 }
 
 //FIRES SIDEWINDER, UDPATES SIDEWINDERS REMAINING AND ADVERSARY HEALTH
