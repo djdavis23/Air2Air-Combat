@@ -80,7 +80,7 @@ let blueForces = [
     amraamCap: 2,
     numAmraams: 2,
     imgs: [
-      'assets/F16.jpg',
+      'assets/F-15.jpg',
       'assets/victory.gif',
       'assets/defeat.gif'
     ],
