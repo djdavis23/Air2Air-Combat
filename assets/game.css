@@ -13,3 +13,7 @@
 footer {
   height: 10vh;
 }
+
+#preload {
+  display: none;
+}
