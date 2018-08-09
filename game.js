@@ -198,6 +198,7 @@ function update() {
 
   //if adversary health goes to zero, player wins
   if (activeRedForce.health <= 0) {
+    activeRedForce.health = 0;
     activeBlueForce.imgIndex = 1;
     activeRedForce.imgIndex = 2;
     statusMessage = "YOU WIN!!!"
