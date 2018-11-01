@@ -11,3 +11,4 @@ another defense.  Each defense is effective against one type of attack and can r
 ineffective (max damage done).
 If the adversary's health drops to/below zero, the player wins.
 If the player runs out of missiles and bullets prior to the advesary dying, then the player loses.
+This project created just with Vanilla javascript.  No DB to persist data.
